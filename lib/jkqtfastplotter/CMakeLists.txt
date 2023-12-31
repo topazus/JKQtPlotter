@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 set(libBasename JKQTFastPlotter)
 set(libIncludeSubdir jkqtfastplotter)
+set(cmakeSubdir JKQTCommon${QT_VERSION_MAJOR})
 
 if(JKQtPlotter_BUILD_SHARED_LIBS)
     set(libsh_name ${libBasename}SharedLib)
@@ -62,34 +63,34 @@ if(JKQtPlotter_BUILD_SHARED_LIBS)
     add_library(${libsh_name} SHARED ${SOURCES} ${RESOURCES} ${HEADERS})
     JKQtFastPlotter_setDefaultLibOptions(${libsh_name})
     set_property(TARGET ${libsh_name} PROPERTY OUTPUT_NAME  "${libsh_name_decorated}")
-    target_link_libraries(${libsh_name} PUBLIC JKQTCommonSharedLib)
+    target_link_libraries(${libsh_name} PUBLIC JKQTCommonSharedLib${QT_VERSION_MAJOR})
     target_compile_definitions(${libsh_name} PUBLIC JKQTFASTPLOTTER_LIB_IN_DLL)
     target_compile_definitions(${libsh_name} PRIVATE JKQTFASTPLOTTER_LIB_EXPORT_LIBRARY)
     set_target_properties(${libsh_name} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS "ON")
-    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake 
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
     add_library(${lib_name} STATIC ${SOURCES} ${RESOURCES} ${HEADERS})
     JKQtFastPlotter_setDefaultLibOptions(${lib_name})
     set_property(TARGET ${lib_name} PROPERTY OUTPUT_NAME  "${lib_name_decorated}")
-    target_link_libraries(${lib_name} PUBLIC  JKQTCommonLib)
+    target_link_libraries(${lib_name} PUBLIC  JKQTCommonLib${QT_VERSION_MAJOR})
     write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Version.cmake
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 
 
 # Installation
 if(JKQtPlotter_BUILD_SHARED_LIBS)
-    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} "Shared")
+    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} ${cmakeSubdir} "Shared")
 endif(JKQtPlotter_BUILD_SHARED_LIBS)
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
-    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} "")
+    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} ${cmakeSubdir} "")
 endif(JKQtPlotter_BUILD_STATIC_LIBS)
 
 install(FILES ${HEADERS}
