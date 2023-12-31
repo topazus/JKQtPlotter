@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.15)
 set(libBasename JKQTMath)
 set(oldlibBasename JKQTCommonStatisticsAndMath)
 set(libIncludeSubdir jkqtmath)
+set(cmakeSubdir JKQTCommon${QT_VERSION_MAJOR})
 
 if(JKQtPlotter_BUILD_SHARED_LIBS)
     set(libsh_name ${libBasename}SharedLib)
@@ -99,22 +100,22 @@ if(JKQtPlotter_BUILD_SHARED_LIBS)
     set_property(TARGET ${libsh_name} PROPERTY OUTPUT_NAME  "${libsh_name_decorated}")
     target_compile_definitions(${libsh_name} PUBLIC jkqtmath_LIB_IN_DLL)
     target_compile_definitions(${libsh_name} PRIVATE jkqtmath_LIB_EXPORT_LIBRARY)
-    target_link_libraries(${libsh_name} PUBLIC JKQTCommonSharedLib)
+    target_link_libraries(${libsh_name} PUBLIC JKQTCommonSharedLib${QT_VERSION_MAJOR})
     set_target_properties(${libsh_name} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS "ON")
-    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake 
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
     add_library(${oldlibsh_name} ALIAS ${libsh_name})
 endif()
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
     add_library(${lib_name} STATIC ${SOURCES} ${HEADERS})
     JKQtCommon_setDefaultLibOptions(${lib_name})
-    target_link_libraries(${lib_name} PUBLIC JKQTCommonLib)
+    target_link_libraries(${lib_name} PUBLIC JKQTCommonLib${QT_VERSION_MAJOR})
     set_property(TARGET ${lib_name} PROPERTY OUTPUT_NAME  "${lib_name_decorated}")
     write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Version.cmake
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
     add_library(${oldlib_name} ALIAS ${lib_name})
 endif()
 
@@ -122,11 +123,11 @@ endif()
 
 # Installation
 if(JKQtPlotter_BUILD_SHARED_LIBS)
-    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} "Shared")
+    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} ${cmakeSubdir} "Shared")
 endif(JKQtPlotter_BUILD_SHARED_LIBS)
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
-    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} "")
+    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} ${cmakeSubdir} "")
 endif(JKQtPlotter_BUILD_STATIC_LIBS)
 
 install(FILES ${HEADERS}

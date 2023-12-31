@@ -1,4 +1,4 @@
-function(jkqtplotter_installlibrary lib_name libIncludeSubdir BuildTypePart)
+function(jkqtplotter_installlibrary lib_name libIncludeSubdir cmakeSubdir BuildTypePart)
     install(TARGETS ${lib_name} EXPORT ${lib_name}_TARGETS
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -14,11 +14,11 @@ function(jkqtplotter_installlibrary lib_name libIncludeSubdir BuildTypePart)
     configure_file(LibTarget.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Config.cmake" @ONLY)
     install(EXPORT ${lib_name}_TARGETS
         FILE "${JKQTP_CURRENT_TARGET_FILENAME}"
-        DESTINATION lib/cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${cmakeSubdir}
     )
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Version.cmake"
-                    DESTINATION lib/cmake  )
+                    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${cmakeSubdir}  )
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Config.cmake"
-                                DESTINATION lib/cmake  )
+                                DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${cmakeSubdir}  )
 endfunction(jkqtplotter_installlibrary)

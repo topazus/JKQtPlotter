@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 set(libBasename JKQTPlotter)
 set(libIncludeSubdir jkqtplotter)
+set(cmakeSubdir JKQTCommon${QT_VERSION_MAJOR})
 
 if(JKQtPlotter_BUILD_SHARED_LIBS)
     set(libsh_name ${libBasename}SharedLib)
@@ -42,32 +43,32 @@ set(SOURCES_GRAPHS
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpscatter.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtprange.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpspecialline.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpbarchartbase.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpbarchart.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpboxplot.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpboxplotbase.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpboxplotstylingmixins.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpevaluatedfunctionbase.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpevaluatedfunction.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpfilledcurve.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpgeometric.cpp 
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpbarchartbase.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpbarchart.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpboxplot.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpboxplotbase.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpboxplotstylingmixins.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpevaluatedfunctionbase.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpevaluatedfunction.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpfilledcurve.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpgeometric.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpgeoannotations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpgeobase.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpgeolines.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpgeoshapes.cpp    
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpgeoshapes.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpimage.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpimpulses.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpparsedfunction.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtppeakstream.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpsinglecolumnsymbols.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpimageoverlays.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpcontour.cpp 
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpimpulses.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpparsedfunction.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtppeakstream.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpsinglecolumnsymbols.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpimageoverlays.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpcontour.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpimagergb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpviolinplot.cpp
     ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpviolinplotstylingmixins.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpstatisticsadaptors.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpevaluatedparametriccurve.cpp 
-    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtplines.cpp 
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpstatisticsadaptors.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtpevaluatedparametriccurve.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/graphs/jkqtplines.cpp
     )
 set(SOURCES_GUI
     ${CMAKE_CURRENT_LIST_DIR}/gui/jkqtpcomboboxes.cpp
@@ -243,34 +244,34 @@ if(JKQtPlotter_BUILD_SHARED_LIBS)
     )
     JKQtPlottter_setDefaultLibOptions(${libsh_name})
     set_property(TARGET ${libsh_name} PROPERTY OUTPUT_NAME  "${libsh_name_decorated}")
-    target_link_libraries(${libsh_name} PUBLIC JKQTCommonSharedLib JKQTMathSharedLib JKQTMathTextSharedLib)
+    target_link_libraries(${libsh_name} PUBLIC JKQTCommonSharedLib${QT_VERSION_MAJOR} JKQTMathSharedLib${QT_VERSION_MAJOR} JKQTMathTextSharedLib${QT_VERSION_MAJOR})
     target_compile_definitions(${libsh_name} PUBLIC JKQTPLOTTER_LIB_IN_DLL)
     target_compile_definitions(${libsh_name} PRIVATE JKQTPLOTTER_LIB_EXPORT_LIBRARY)
     set_target_properties(${libsh_name} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS "ON")
     write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
     add_library(${lib_name} STATIC ${SOURCES_BASE} ${SOURCES_GRAPHS} ${SOURCES_GUI} ${RESOURCES} ${HEADERS_BASE} ${HEADERS_GRAPHS} ${HEADERS_GUI})
     JKQtPlottter_setDefaultLibOptions(${lib_name})
     set_property(TARGET ${lib_name} PROPERTY OUTPUT_NAME  "${lib_name_decorated}")
-    target_link_libraries(${lib_name} PUBLIC JKQTCommonLib JKQTMathLib JKQTMathTextLib)
+    target_link_libraries(${lib_name} PUBLIC JKQTCommonLib${QT_VERSION_MAJOR} JKQTMathLib${QT_VERSION_MAJOR} JKQTMathTextLib${QT_VERSION_MAJOR})
     write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Version.cmake
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 
 
 # Installation
 if(JKQtPlotter_BUILD_SHARED_LIBS)
-    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} "Shared")
+    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} ${cmakeSubdir} "Shared")
 endif(JKQtPlotter_BUILD_SHARED_LIBS)
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
-    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} "")
+    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} ${cmakeSubdir} "")
 endif(JKQtPlotter_BUILD_STATIC_LIBS)
 
 install(FILES ${HEADERS_BASE}

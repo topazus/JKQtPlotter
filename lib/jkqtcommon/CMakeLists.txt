@@ -1,17 +1,18 @@
 cmake_minimum_required(VERSION 3.15)
 
 set(libBasename JKQTCommon)
-set(libIncludeSubdir jkqtcommon)
+set(libIncludeSubdir jkqtcommon${QT_VERSION_MAJOR})
+set(cmakeSubdir JKQTCommon${QT_VERSION_MAJOR})
 
 if(JKQtPlotter_BUILD_SHARED_LIBS)
-    set(libsh_name ${libBasename}SharedLib)
+    set(libsh_name ${libBasename}SharedLib${QT_VERSION_MAJOR})
     set(libsh_name_decorated ${libsh_name}${JKQtPlotter_LIBNAME_ADDITION})
     set(${libBasename}_SHARED_LIBRARY ${libsh_name_decorated}  CACHE STRING "name of static library for ${libBasename}" FORCE)
     message( STATUS "-- Building ${libsh_name}" )
 endif(JKQtPlotter_BUILD_SHARED_LIBS)
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
-    set(lib_name ${libBasename}Lib)
+    set(lib_name ${libBasename}Lib${QT_VERSION_MAJOR})
     set(lib_name_decorated ${lib_name}${JKQtPlotter_LIBNAME_ADDITION})
     set(${libBasename}_STATIC_LIBRARY ${lib_name_decorated}  CACHE STRING "name of static library for ${libBasename}" FORCE)
     message( STATUS "-- Building ${lib_name}" )
@@ -99,9 +100,9 @@ if(JKQtPlotter_BUILD_SHARED_LIBS)
     target_compile_definitions(${libsh_name} PUBLIC JKQTCOMMON_LIB_IN_DLL)
     target_compile_definitions(${libsh_name} PRIVATE JKQTCOMMON_LIB_EXPORT_LIBRARY)
     set_target_properties(${libsh_name} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS "ON")
-    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake 
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+    write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${libsh_name}Version.cmake
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
@@ -109,19 +110,19 @@ if(JKQtPlotter_BUILD_STATIC_LIBS)
     JKQtCommon_setDefaultLibOptions(${lib_name})
     set_property(TARGET ${lib_name} PROPERTY OUTPUT_NAME  "${lib_name_decorated}")
     write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${lib_name}Version.cmake
-                                     VERSION ${PROJECT_VERSION} 
-                                     COMPATIBILITY AnyNewerVersion )    
+                                     VERSION ${PROJECT_VERSION}
+                                     COMPATIBILITY AnyNewerVersion )
 endif()
 
 
 
 # Installation
 if(JKQtPlotter_BUILD_SHARED_LIBS)
-    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} "Shared")
+    jkqtplotter_installlibrary(${libsh_name} ${libIncludeSubdir} ${cmakeSubdir} "Shared")
 endif(JKQtPlotter_BUILD_SHARED_LIBS)
 
 if(JKQtPlotter_BUILD_STATIC_LIBS)
-    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} "")
+    jkqtplotter_installlibrary(${lib_name} ${libIncludeSubdir} ${cmakeSubdir} "")
 endif(JKQtPlotter_BUILD_STATIC_LIBS)
 
 install(FILES ${HEADERS}
